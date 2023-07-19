@@ -12,17 +12,17 @@ export const THEME = extendTheme({
       500: '#EE7979',
     },
     gray: {
-      1: '#1A181B',
-      2: '#3E3A40',
-      3: '#5F5B62',
-      4: '#9F9BA1',
-      5: '#D9D8DA',
-      6: '#EDECEE',
-      7: '#F7F7F8'
+      100: '#1A181B',
+      200: '#3E3A40',
+      300: '#5F5B62',
+      400: '#9F9BA1',
+      500: '#D9D8DA',
+      600: '#EDECEE',
+      700: '#F7F7F8'
     }
   },
   fonts: {
-    regular: 'Karla_400Regular',
+    heading: 'Karla_400Regular',
     bold: 'Karla_700Bold',
   },
   fontSizes: {
@@ -32,4 +32,8 @@ export const THEME = extendTheme({
     xl: 20,
     xlg: 24
   },
+  sizes: {
+    15: 60,
+    22: 88,
+  }
 })

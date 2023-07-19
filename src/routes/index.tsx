@@ -6,7 +6,7 @@ import { AuthRoutes } from "./auth.routes";
 
 export function Routes() {
   return (
-    <Box flex={1} bg='gray.7'>
+    <Box flex={1} bg='gray.700'>
       <NavigationContainer>
         <AuthRoutes />
       </NavigationContainer>
