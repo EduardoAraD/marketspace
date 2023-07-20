@@ -36,8 +36,8 @@ export function SignIn() {
   }
 
   return (
-    <VStack bg="white" flex={1}>
-      <Center bg="gray.700" flex={1} roundedBottom={24} p={12}>
+    <VStack bg="gray.700" flex={1}>
+      <Center bg="gray.600" flex={1} roundedBottom={24} p={12}>
         <Center mb={20}>
           <Logo size={24} />
           <Heading fontSize='xlg' fontFamily='body' color='gray.100'>

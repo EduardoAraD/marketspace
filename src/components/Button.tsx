@@ -14,10 +14,10 @@ export function Button({ title, icon = null, typeColorButton = 'PRIMARY', ...res
     <ButtonNB
       w='full'
       p={3}
-      bg={typeColorButton === 'PRIMARY' ? 'lightBlue.500' : typeColorButton === 'SECUNDARY' ? 'gray.100': 'gray.500'}
+      bg={typeColorButton === 'PRIMARY' ? 'lightBlue.500' : typeColorButton === 'SECUNDARY' ? 'gray.100': 'gray.400'}
       rounded='md'
       _pressed={{
-        bg: typeColorButton === 'PRIMARY' ? 'blue.500' : typeColorButton === 'SECUNDARY' ? 'gray.200': 'gray.400'
+        bg: typeColorButton === 'PRIMARY' ? 'blue.500' : typeColorButton === 'SECUNDARY' ? 'gray.200': 'gray.500'
       }}
       {...rest}
     >

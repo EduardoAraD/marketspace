@@ -4,7 +4,8 @@ import {
   IInputProps,
   Pressable,
   Box,
-  FormControl
+  FormControl,
+  useTheme
 } from 'native-base';
 import { Eye, EyeSlash } from 'phosphor-react-native';
 
@@ -14,6 +15,7 @@ type InputProps = IInputProps & {
 }
 
 export function Input({ typeInput = 'normal', isInvalid, errorMessage = '', ...rest }: InputProps) {
+  const { colors } = useTheme();
   const invalid = !!errorMessage || isInvalid ;
 
   const [typeIconEye, setTypeIconEye] = useState<'open' | 'close'>('close');
@@ -33,9 +35,9 @@ export function Input({ typeInput = 'normal', isInvalid, errorMessage = '', ...r
         px={4}
         py={3}
         rounded={6}
-        bg='white'
+        bg='gray.700'
+        borderColor='gray.700'
         borderWidth={1}
-        borderColor='white'
         fontFamily='heading'
         fontSize='md'
         placeholderTextColor='gray.400'
@@ -44,13 +46,13 @@ export function Input({ typeInput = 'normal', isInvalid, errorMessage = '', ...r
         InputRightElement={
           typeInput === 'password' ?
           <Pressable p={2} onPress={handleUpdateEye}>
-            {typeIconEye === 'open' ? <Eye /> : <EyeSlash />}
+            {typeIconEye === 'open' ? <Eye color={colors.gray[300]} /> : <EyeSlash color={colors.gray[300]} />}
           </Pressable> : 
           <Box />
         }
         _focus={{
           borderColor: 'gray.300',
-          bg: 'white'
+          bg: 'gray.700'
         }}
         _invalid={{
           borderWidth: 1,

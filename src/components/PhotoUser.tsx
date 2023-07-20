@@ -1,6 +1,10 @@
-import { Box, IImageProps, Image } from "native-base";
+import { Box, IImageProps, Image, Skeleton } from "native-base";
 
-export function PhotoUser({ ...rest }: IImageProps) {
+type PhotoUserProps = IImageProps & {
+  isLoading?: boolean;
+}
+
+export function PhotoUser({ isLoading = false, ...rest }: PhotoUserProps) {
   return (
     <Box
       borderWidth={3}
@@ -8,11 +12,15 @@ export function PhotoUser({ ...rest }: IImageProps) {
       rounded='full'
       overflow='hidden'
     >
-      <Image
-        resizeMode="contain"
-        size={22}
-        {...rest}
-      />
+      {isLoading ? (
+        <Skeleton h={22} w={22} startColor='gray.500' endColor='lightBlue.500' />
+      ) : (
+        <Image
+          resizeMode="cover"
+          size={22}
+          {...rest}
+        />
+      )}
     </Box>
   )
 }
