@@ -44,21 +44,21 @@ export function CardMiniAd() {
               borderColor='gray.700'
             />
             <Box bg={isUsed ? 'gray.200' : 'blue.500'} px={2} py={0.5} rounded='full'>
-              <Text fontFamily='body' fontSize={10} color='white' p={0}>
+              <Text fontFamily='heading' fontSize={10} color='white' p={0}>
                 {isUsed ? 'USADO' : 'NOVO'}
               </Text>
             </Box>
           </HStack>
           
         </Box>
-        <Text fontFamily='heading' fontSize='sm' color='gray.200'>
+        <Text fontFamily='body' fontSize='sm' color='gray.200'>
           Blusa do Ajax
           </Text>
         <HStack alignItems='flex-end'>
-          <Heading fontFamily='body' fontSize='xs' color='gray.100' mr={1}>
+          <Heading fontFamily='heading' fontSize='xs' color='gray.100' mr={1}>
             R$
           </Heading>
-          <Heading fontFamily='body' fontSize='md' color='gray.100'>
+          <Heading fontFamily='heading' fontSize='md' color='gray.100'>
             102,00
           </Heading>
         </HStack>

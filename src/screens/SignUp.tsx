@@ -119,10 +119,10 @@ export function SignUp() {
       <ScrollView showsVerticalScrollIndicator={false}>
         <Center mt={4}>
           <Logo size={15} />
-          <Heading mb={2} fontSize='xl' fontFamily='body' color='gray.100'>
+          <Heading mb={2} fontSize='xl' fontFamily='heading' color='gray.100'>
             Boas vindas!
           </Heading>
-          <Text textAlign='center' fontSize='sm' fontFamily='heading' color='gray.200'>
+          <Text textAlign='center' fontSize='sm' fontFamily='body' color='gray.200'>
             Crie sua conta e use o espaço para comprar itens variados e vender seus produtos
           </Text>
         </Center>
@@ -228,7 +228,7 @@ export function SignUp() {
         </VStack>
 
         <Center mt={12} mb={10}>
-          <Text fontSize='sm' fontFamily='heading' color='gray.200' mb={4}>Já tem conta?</Text>
+          <Text fontSize='sm' fontFamily='body' color='gray.200' mb={4}>Já tem conta?</Text>
           <Button
             title="Ir para login"
             typeColorButton="DEFAULT"

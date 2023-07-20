@@ -15,8 +15,8 @@ export function HeaderHome() {
           size={12}
         />
         <VStack flex={1} ml={2}>
-          <Text fontFamily='heading' fontSize='md' color='gray.100'>Boas vindas,</Text>
-          <Heading fontFamily='body' fontSize='md' color='gray.100' numberOfLines={1}>Eduardo!</Heading>
+          <Text fontFamily='body' fontSize='md' color='gray.100'>Boas vindas,</Text>
+          <Heading fontFamily='heading' fontSize='md' color='gray.100' numberOfLines={1}>Eduardo!</Heading>
         </VStack>
       </HStack>
       <Button

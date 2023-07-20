@@ -38,7 +38,7 @@ export function Input({ typeInput = 'normal', isInvalid, errorMessage = '', ...r
         bg='gray.700'
         borderColor='gray.700'
         borderWidth={1}
-        fontFamily='heading'
+        fontFamily='body'
         fontSize='md'
         placeholderTextColor='gray.400'
         color='gray.100'

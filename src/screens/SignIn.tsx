@@ -40,16 +40,16 @@ export function SignIn() {
       <Center bg="gray.600" flex={1} roundedBottom={24} p={12}>
         <Center mb={20}>
           <Logo size={24} />
-          <Heading fontSize='xlg' fontFamily='body' color='gray.100'>
+          <Heading fontSize='xlg' fontFamily='heading' color='gray.100'>
             marketspace
           </Heading>
-          <Text fontSize='sm' fontFamily='heading' color='gray.300'>
+          <Text fontSize='sm' fontFamily='body' color='gray.300'>
             Seu espaço de compra e venda
           </Text>
         </Center>
 
         <Center w='full'>
-          <Text fontSize='sm' fontFamily='heading' color='gray.200' mb={4}>
+          <Text fontSize='sm' fontFamily='body' color='gray.200' mb={4}>
             Acesse sua conta
           </Text>
           <Controller

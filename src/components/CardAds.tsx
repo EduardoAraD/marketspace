@@ -19,13 +19,13 @@ export function CardAds() {
       <HStack alignItems='center'>
         <Tag size={22} color={colors.blue[500]} />
         <VStack ml={4}>
-          <Heading fontFamily='body' fontSize='xl' color='gray.200'>4</Heading>
-          <Text fontFamily='heading' fontSize='xs' color='gray.200'>anúncios ativos</Text>
+          <Heading fontFamily='heading' fontSize='xl' color='gray.200'>4</Heading>
+          <Text fontFamily='body' fontSize='xs' color='gray.200'>anúncios ativos</Text>
         </VStack>
       </HStack>
       <TouchableOpacity activeOpacity={0.7}>
         <HStack alignItems='center' p={3}>
-          <Heading mr={2} fontFamily='body' fontSize='xs' color='blue.500'>Meus anúncios</Heading>
+          <Heading mr={2} fontFamily='heading' fontSize='xs' color='blue.500'>Meus anúncios</Heading>
           <ArrowRight color={colors.blue[500]} />
         </HStack>
       </TouchableOpacity>

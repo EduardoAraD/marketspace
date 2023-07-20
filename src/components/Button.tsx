@@ -31,7 +31,7 @@ export function Button({ title, icon = null, typeColorButton = 'PRIMARY', ...res
           />
         )}
         <Text
-          fontFamily='body'
+          fontFamily='heading'
           fontSize='sm'
           color={typeColorButton === 'DEFAULT' ? 'gray.200' : 'gray.700'}
         >{title}</Text>

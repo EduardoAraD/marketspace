@@ -1,24 +1,36 @@
 import { useState } from "react";
-import { Box, Center, FlatList, Text, VStack } from "native-base";
+import { Box, FlatList, Text, VStack, Modal } from "native-base";
 
-import { HeaderHome } from "../components/HeaderHome";
 import { CardAds } from "../components/CardAds";
-import { InputSearch } from "../components/InputSearch";
 import { CardMiniAd } from "../components/CardMiniAd";
 import { FooterTabNavigation } from "../components/FooterTabNavigation";
+import { HeaderHome } from "../components/HeaderHome";
+import { InputSearch } from "../components/InputSearch";
+import { IFilterProps, ModalFilterAds } from "../components/ModalFilterAds";
 
 export function Home() {
   const [isShowModal, setIsShowModal] = useState(false);
   const [ads, setAds] = useState<string[]>(['1', '2', '3', '4', '5']);
+  const [filter, setFilter] = useState<IFilterProps>({
+    acceptChange: false,
+    condition: '',
+    pagament: {
+      boleto: false,
+      cardCredit: false,
+      depositBank: false,
+      money: false,
+      pix: false
+    }
+  });
 
   return (
     <VStack flex={1}>
       <VStack pt={6} mt={10} flex={1}>
         <VStack px={6}>
           <HeaderHome />
-          <Text mt={8} mb={3} fontFamily='heading' fontSize='sm' color='gray.300'>Seus produtos anunciados para venda</Text>
+          <Text mt={8} mb={3} fontFamily='body' fontSize='sm' color='gray.300'>Seus produtos anunciados para venda</Text>
           <CardAds />
-          <Text mt={8} mb={3} fontFamily='heading' fontSize='sm' color='gray.300'>Compre produtos variados</Text>
+          <Text mt={8} mb={3} fontFamily='body' fontSize='sm' color='gray.300'>Compre produtos variados</Text>
           <InputSearch
             placeholder="Buscar anúncio"
             onPressFilter={() => {
@@ -47,6 +59,12 @@ export function Home() {
         />
       </VStack>
       <FooterTabNavigation selected="home" />
+      <ModalFilterAds
+        filter={filter}
+        updateFilter={setFilter}
+        isOpen={isShowModal}
+        onClose={() => setIsShowModal(false)}
+      />
     </VStack>
   )
 }
