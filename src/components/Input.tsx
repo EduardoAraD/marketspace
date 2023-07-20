@@ -56,7 +56,7 @@ export function Input({ typeInput = 'normal', isInvalid, errorMessage = '', ...r
         }}
         _invalid={{
           borderWidth: 1,
-          borderColor: 'lightRed.500',
+          borderColor: 'red.900',
         }}
         isInvalid={isInvalid}
         {...rest}

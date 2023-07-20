@@ -8,8 +8,8 @@ export const THEME = extendTheme({
     lightBlue: {
       500: '#647AC7'
     },
-    lightRed: {
-      500: '#EE7979',
+    red: {
+      900: '#EE7979',
     },
     gray: {
       100: '#1A181B',

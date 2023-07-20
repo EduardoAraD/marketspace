@@ -131,11 +131,10 @@ export function SignUp() {
           <Center mb={4}>
             <Box>
               <PhotoUser
-                source={photoSelected.uri ?
-                  { uri: photoSelected.uri } :
-                  defaultAvatarImg
-                }
-                alt='Foto do usuário'
+                imageProps={{
+                  source: photoSelected.uri ? { uri: photoSelected.uri } : defaultAvatarImg,
+                  alt: 'Foto do usuário',
+                }}
                 isLoading={isLoadingPhotoUser}
               />
               <TouchableOpacity
