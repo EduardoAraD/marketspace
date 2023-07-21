@@ -1,12 +1,13 @@
 import { useEffect, useRef, useState } from "react";
 import { Dimensions, FlatList } from "react-native";
-import { Image, Box } from "native-base";
+import { Image, Box, Text, Center, Heading } from "native-base";
 
 type CarouselProps = {
   images: string[];
+  isActiveAd?: boolean;
 }
 
-export function Carousel({ images }: CarouselProps) {
+export function Carousel({ images, isActiveAd = true }: CarouselProps) {
   const [activeBanner, setActiveBanner] = useState(0);
   const FlatlistRef = useRef<FlatList>(null);
 
@@ -26,6 +27,7 @@ export function Carousel({ images }: CarouselProps) {
   ])
 
   useEffect(() => {
+    if(!isActiveAd || images.length === 1) return;
     const timeId = setTimeout(() => {
       const newIndex = activeBanner === images.length - 1 ? 0 : activeBanner + 1;
 
@@ -33,7 +35,7 @@ export function Carousel({ images }: CarouselProps) {
       setActiveBanner(newIndex);
     }, 3000);
     return () => clearTimeout(timeId);
-  }, [activeBanner, images.length])
+  }, [activeBanner, images.length, isActiveAd])
 
   return (
     <>
@@ -80,6 +82,16 @@ export function Carousel({ images }: CarouselProps) {
           opacity: 0.7,
         }}
       />
+      {!isActiveAd && (
+        <>
+          <Box h={280} bg='gray.100' opacity={0.45} mt={-280} />
+          <Center h={280} w='full' position='absolute'>
+            <Heading fontFamily='heading' fontSize='sm' color='gray.700'>
+              ANÚNCIO DESATIVADO
+            </Heading>
+          </Center>
+        </>
+      )}
     </>
   )
 }

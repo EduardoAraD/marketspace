@@ -3,11 +3,13 @@ import { createNativeStackNavigator, NativeStackNavigationProp } from "@react-na
 import { Home } from "../screens/Home";
 import { MyAds } from "../screens/MyAds";
 import { DetailsAd } from "../screens/DetailsAd";
+import { DetailsMyAd } from "../screens/DetailsMyAd";
 
 type AppRoutes = {
   home: undefined;
   myAds: undefined;
   detailsAd: undefined;
+  detailsMyAd: undefined;
 }
 
 export type AppNavigatorRoutesProps = NativeStackNavigationProp<AppRoutes>;
@@ -25,6 +27,7 @@ export function AppRoutes () {
       <Screen name="home" component={Home} />
       <Screen name="myAds" component={MyAds} />
       <Screen name="detailsAd" component={DetailsAd} />
+      <Screen name='detailsMyAd' component={DetailsMyAd} />
     </Navigator>
   )
 }

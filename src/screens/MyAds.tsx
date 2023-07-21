@@ -5,9 +5,9 @@ import { CaretUp, CaretDown } from "phosphor-react-native";
 
 import { AppNavigatorRoutesProps } from "../routes/app.routes";
 
+import { CardMiniAd } from "../components/CardMiniAd";
 import { FooterTabNavigation } from "../components/FooterTabNavigation";
 import { Header } from "../components/Header";
-import { CardMiniAd } from "../components/CardMiniAd";
 
 export function MyAds() {
   const { colors } = useTheme();
@@ -17,7 +17,7 @@ export function MyAds() {
   const [ads, setAds] = useState<string[]>(['1', '2', '3', '4', '5']);
 
   function handleGoDetailsAd() {
-    navigate("detailsAd")
+    navigate("detailsMyAd")
   }
 
   return (
