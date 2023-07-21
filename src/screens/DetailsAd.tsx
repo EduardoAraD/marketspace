@@ -15,7 +15,7 @@ export function DetailsAd() {
   ]
 
   return (
-    <VStack flex={1}>
+    <VStack flex={1} bg='gray.600'>
       <Header showIconBack />
 
       <ScrollView>

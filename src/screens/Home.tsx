@@ -33,7 +33,7 @@ export function Home() {
   }
 
   return (
-    <VStack flex={1}>
+    <VStack flex={1} bg='gray.600'>
       <VStack pt={6} mt={10} flex={1}>
         <VStack px={6}>
           <HeaderHome />
@@ -62,7 +62,6 @@ export function Home() {
             </Text>
           )}
           ItemSeparatorComponent={() => <Box h={6} w={5} />}
-          horizontal={false}
           numColumns={2}
           showsVerticalScrollIndicator={false}
         />

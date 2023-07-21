@@ -6,6 +6,7 @@ import { MoneyText } from "./MoneyText"
 import { PhotoUser } from "./PhotoUser"
 
 type CardMiniAd = TouchableOpacityProps & {
+  isActiveAd?: boolean;
   // foto do anunciante
   // foto do produto
   // nome
@@ -13,7 +14,7 @@ type CardMiniAd = TouchableOpacityProps & {
   // é usado
 }
 
-export function CardMiniAd({ ...rest }: CardMiniAd) {
+export function CardMiniAd({ isActiveAd = true, ...rest }: CardMiniAd) {
   const [isUsed, setUsed] = useState(false);
 
   return (
@@ -50,7 +51,30 @@ export function CardMiniAd({ ...rest }: CardMiniAd) {
               </Text>
             </Box>
           </HStack>
-          
+
+          {!isActiveAd && (
+            <>
+              <Box
+                h={100}
+                bg="gray.100"
+                opacity={0.45}
+                rounded='sm'
+                p={1}
+                mt={-100}
+                justifyContent='flex-end'
+              />
+              <Text 
+                fontFamily='heading'
+                fontSize={11}
+                color='gray.700'
+                position='absolute'
+                bottom={0}
+                p={1}
+              >
+                ANÚNCIO DESATIVADO
+              </Text>
+            </>
+          )}
         </Box>
         <Text fontFamily='body' fontSize='sm' color='gray.200'>
           Blusa do Ajax
