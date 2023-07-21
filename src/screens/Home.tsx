@@ -1,5 +1,8 @@
 import { useState } from "react";
-import { Box, FlatList, Text, VStack, Modal } from "native-base";
+import { Box, FlatList, Text, VStack } from "native-base";
+import { useNavigation } from "@react-navigation/native";
+
+import { AppNavigatorRoutesProps } from "../routes/app.routes";
 
 import { CardAds } from "../components/CardAds";
 import { CardMiniAd } from "../components/CardMiniAd";
@@ -9,6 +12,8 @@ import { InputSearch } from "../components/InputSearch";
 import { IFilterProps, ModalFilterAds } from "../components/ModalFilterAds";
 
 export function Home() {
+  const { navigate } = useNavigation<AppNavigatorRoutesProps>();
+
   const [isShowModal, setIsShowModal] = useState(false);
   const [ads, setAds] = useState<string[]>(['1', '2', '3', '4', '5']);
   const [filter, setFilter] = useState<IFilterProps>({
@@ -22,6 +27,10 @@ export function Home() {
       pix: false
     }
   });
+
+  function handleGoDetailsAd() {
+    navigate("detailsAd")
+  }
 
   return (
     <VStack flex={1}>
@@ -42,7 +51,7 @@ export function Home() {
           data={ads}
           keyExtractor={item => item}
           renderItem={({ item }) => (
-            <CardMiniAd />
+            <CardMiniAd onPress={handleGoDetailsAd} />
           )}
           _contentContainerStyle={{ pb: 10, pt: 2, alignSelf: 'center' }}
           contentContainerStyle={ads.length === 0 && {flex: 1, justifyContent: 'center'}}

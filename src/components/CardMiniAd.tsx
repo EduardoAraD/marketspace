@@ -1,8 +1,9 @@
-import { Box, HStack, Heading, Image, Text, VStack } from "native-base"
-
-import { PhotoUser } from "./PhotoUser"
-import { Dimensions, TouchableOpacity, TouchableOpacityProps } from "react-native"
 import { useState } from "react"
+import { Dimensions, TouchableOpacity, TouchableOpacityProps } from "react-native"
+import { Box, HStack, Image, Text, VStack } from "native-base"
+
+import { MoneyText } from "./MoneyText"
+import { PhotoUser } from "./PhotoUser"
 
 type CardMiniAd = TouchableOpacityProps & {
   // foto do anunciante
@@ -12,11 +13,11 @@ type CardMiniAd = TouchableOpacityProps & {
   // é usado
 }
 
-export function CardMiniAd() {
+export function CardMiniAd({ ...rest }: CardMiniAd) {
   const [isUsed, setUsed] = useState(false);
 
   return (
-    <TouchableOpacity>
+    <TouchableOpacity activeOpacity={0.8} {...rest}>
       <VStack w={Dimensions.get('window').width / 2 - 36} mx={2}>
         <Box>
           <Image
@@ -53,15 +54,13 @@ export function CardMiniAd() {
         </Box>
         <Text fontFamily='body' fontSize='sm' color='gray.200'>
           Blusa do Ajax
-          </Text>
-        <HStack alignItems='flex-end'>
-          <Heading fontFamily='heading' fontSize='xs' color='gray.100' mr={1}>
-            R$
-          </Heading>
-          <Heading fontFamily='heading' fontSize='md' color='gray.100'>
-            102,00
-          </Heading>
-        </HStack>
+        </Text>
+        <MoneyText
+          colorType="gray"
+          money="120,00"
+          fontSizeRS="xs"
+          fontSizeMoney="md"
+        />
       </VStack>
     </TouchableOpacity>
   )
