@@ -14,6 +14,8 @@ import { RadioLabel } from "../components/RadioLabel";
 import { TouchNewImage } from "../components/TouchNewImage";
 
 import { maskPrice } from "../utils/mask";
+import { useNavigation } from "@react-navigation/native";
+import { AppNavigatorRoutesProps } from "../routes/app.routes";
 
 type ImagePhotoAdSelected = {
   uri: string;
@@ -42,6 +44,7 @@ const signUpSchema = Yup.object({
 })
 
 export function CreateAd() {
+  const { navigate, goBack } = useNavigation<AppNavigatorRoutesProps>();
   const toast = useToast();
   
   const [photosAd, setPhotosAd] = useState<ImagePhotoAdSelected[]>([]);
@@ -146,6 +149,14 @@ export function CreateAd() {
     }
 
     console.log(newData);
+
+    navigate("previewAd", {
+      photos: newData.photos,
+    })
+  }
+
+  function handleCancelCreateAd() {
+    goBack();
   }
 
   return (
@@ -297,6 +308,7 @@ export function CreateAd() {
           title="Cancelar"
           typeColorButton="DEFAULT"
           mr={3}
+          onPress={handleCancelCreateAd}
         />
         <Button
           flex={1}

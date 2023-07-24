@@ -5,13 +5,15 @@ import { DetailsAd } from "../screens/DetailsAd";
 import { DetailsMyAd } from "../screens/DetailsMyAd";
 import { Home } from "../screens/Home";
 import { MyAds } from "../screens/MyAds";
+import { PreviewAd, PreviewAdRoutes } from "../screens/PreviewAd";
 
 type AppRoutes = {
   home: undefined;
   myAds: undefined;
   detailsAd: undefined;
   detailsMyAd: undefined;
-  createAd: undefined
+  createAd: undefined;
+  previewAd: PreviewAdRoutes;
 }
 
 export type AppNavigatorRoutesProps = NativeStackNavigationProp<AppRoutes>;
@@ -31,6 +33,7 @@ export function AppRoutes () {
       <Screen name="detailsAd" component={DetailsAd} />
       <Screen name='detailsMyAd' component={DetailsMyAd} />
       <Screen name='createAd' component={CreateAd} />
+      <Screen name='previewAd' component={PreviewAd} />
     </Navigator>
   )
 }
