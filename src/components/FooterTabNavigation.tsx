@@ -3,6 +3,7 @@ import { TouchableOpacity } from "react-native";
 import { House, Tag, SignOut } from 'phosphor-react-native';
 import { useNavigation } from "@react-navigation/native";
 import { AppNavigatorRoutesProps } from "../routes/app.routes";
+import { useAuth } from "../hooks/useAuth";
 
 type OptionsTabNavigation = 'home' | 'myAds'
 
@@ -12,6 +13,7 @@ type FooterTabNavigationProps = {
 
 export function FooterTabNavigation({ selected }: FooterTabNavigationProps) {
   const { navigate } = useNavigation<AppNavigatorRoutesProps>();
+  const { signOut } = useAuth();
   const { colors } = useTheme();
 
   function handleOptionSelected(option: OptionsTabNavigation) {
@@ -40,7 +42,7 @@ export function FooterTabNavigation({ selected }: FooterTabNavigationProps) {
           <Tag weight="bold" color={selected === 'myAds' ? colors.gray[200] : colors.gray[400]} />
         </Box>
       </TouchableOpacity>
-      <TouchableOpacity activeOpacity={0.8}>
+      <TouchableOpacity activeOpacity={0.8} onPress={signOut}>
         <Box p={3}>
           <SignOut weight="bold" color={colors.red[900]} />
         </Box>

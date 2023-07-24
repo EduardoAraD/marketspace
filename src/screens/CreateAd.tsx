@@ -1,10 +1,13 @@
 import { useState } from "react";
+import { useNavigation } from "@react-navigation/native";
 import { HStack, Heading, ScrollView, Switch, Text, VStack, useToast } from "native-base";
 import * as ImagePicker from 'expo-image-picker';
 import * as FileSystem from 'expo-file-system';
 import { useForm, Controller } from "react-hook-form";
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as Yup from 'yup';
+
+import { AppNavigatorRoutesProps } from "../routes/app.routes";
 
 import { Button } from "../components/Button";
 import { CheckboxLabel } from "../components/CheckBoxLabel";
@@ -14,8 +17,6 @@ import { RadioLabel } from "../components/RadioLabel";
 import { TouchNewImage } from "../components/TouchNewImage";
 
 import { maskPrice } from "../utils/mask";
-import { useNavigation } from "@react-navigation/native";
-import { AppNavigatorRoutesProps } from "../routes/app.routes";
 
 type ImagePhotoAdSelected = {
   uri: string;
@@ -148,7 +149,7 @@ export function CreateAd() {
       acceptChange,
     }
 
-    console.log(newData);
+    // console.log(newData);
 
     navigate("previewAd", {
       photos: newData.photos,

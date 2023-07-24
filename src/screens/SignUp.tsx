@@ -9,6 +9,8 @@ import { useForm, Controller } from "react-hook-form";
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as Yup from 'yup';
 
+import { useAuth } from "../hooks/useAuth";
+
 import { AuthNavigatorRouteProps } from "../routes/auth.routes";
 
 import { Button } from "../components/Button";
@@ -16,6 +18,9 @@ import { Input } from "../components/Input";
 import { Logo } from "../components/Logo";
 import { PhotoUser } from "../components/PhotoUser";
 
+import { createUserService } from "../services/User/createUser";
+
+import { AppError } from "../utils/AppError";
 import { maskPhone } from "../utils/mask";
 
 import defaultAvatarImg from '../assets/defaultAvatar.png';
@@ -44,6 +49,7 @@ const signUpSchema = Yup.object({
 
 export function SignUp() {
   const { navigate } = useNavigation<AuthNavigatorRouteProps>();
+  const { signIn } = useAuth();
   const toast = useToast();
 
   const { control, handleSubmit, formState: { errors } } = useForm<FormDataProps>({
@@ -72,11 +78,7 @@ export function SignUp() {
         const photoInfo = await FileSystem.getInfoAsync(photoSelected.assets[0].uri, { size: true });
         
         if(photoInfo.exists && ((photoInfo.size / 1024 / 1024) * 0.6) > 5) {
-          return toast.show({
-            title: 'Esssa imagem é muito grande. Escolha uma de até 5MB.',
-            placement: 'top',
-            bgColor: 'red.500',
-          });
+          throw new AppError('Esssa imagem é muito grande. Escolha uma de até 5MB.')
         }
 
         const fileExtension = photoSelected.assets[0].uri.split('.').pop();
@@ -91,16 +93,20 @@ export function SignUp() {
           title: 'Foto adicionada',
           placement: 'top',
           bgColor: 'green.500',
+          duration: 2000,
         })
       }
     } catch (error) {
-      console.log(error);
-
+      const isAppError = error instanceof AppError;
+      
+      const title = isAppError ? error.message : 'Não foi possível adicionar a foto. Tente novamente mais tarde.'
+      
       toast.show({
-        title: 'Erro ao adicionar a foto.',
+        title,
         placement: 'top',
-        bgColor: 'red.500',
-      })
+        bg: 'red.500',
+        duration: 2000,
+      });
     } finally {
       setIsLoadingPhotoUser(false);
     }
@@ -110,8 +116,41 @@ export function SignUp() {
     navigate("signIn");
   }
 
-  function handleSignUpSubmit(data: FormDataProps) {
-    console.log(data);
+  async function handleSignUpSubmit({ email, name, password, phone }: FormDataProps) {
+    try {
+      setIsLoading(true);
+
+      if(!photoSelected.uri) {
+        throw new AppError('A foto não foi adicionada');
+      }
+
+      await createUserService(
+        {
+        ...photoSelected,
+          name: `${name}.${photoSelected.type.split('/')[1]}`.toLowerCase().replace(/\s/g, '')
+        },
+        name,
+        email,
+        phone,
+        password,
+      );
+
+      await signIn(email, password);
+
+    } catch (error) {
+      const isAppError = error instanceof AppError;
+      
+      const title = isAppError ? error.message : 'Não foi possível entrar. Tente novamente mais tarde.'
+      
+      toast.show({
+        title,
+        placement: 'top',
+        bg: 'red.500',
+        duration: 2000,
+      })
+    } finally {
+      setIsLoading(false);
+    }
   }
 
   return (
@@ -134,7 +173,9 @@ export function SignUp() {
                 imageProps={{
                   source: photoSelected.uri ? { uri: photoSelected.uri } : defaultAvatarImg,
                   alt: 'Foto do usuário',
+                  // source: { uri: 'https://github.com/eduardoarad.png' }
                 }}
+                size={22}
                 isLoading={isLoadingPhotoUser}
               />
               <TouchableOpacity
