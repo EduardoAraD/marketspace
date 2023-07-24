@@ -31,3 +31,14 @@ export function maskPhone(phone: string) {
 
   return phoneFormated;
 }
+
+export function maskPrice(price: string) {
+  const priceFormat = price.replace('.', '').replace(',', '').replace(/\D/g, '')
+
+  const options = { minimumFractionDigits: 2 }
+  const result = new Intl.NumberFormat('pt-BR', options).format(
+    parseFloat(priceFormat) / 100
+  )
+
+  return result
+}

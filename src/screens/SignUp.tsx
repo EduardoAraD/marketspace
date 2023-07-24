@@ -223,6 +223,7 @@ export function SignUp() {
             mt={2}
             title="Criar"
             typeColorButton="SECUNDARY"
+            isLoading={isLoading}
             onPress={handleSubmit(handleSignUpSubmit)}
           />
         </VStack>

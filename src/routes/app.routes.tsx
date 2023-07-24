@@ -1,15 +1,17 @@
 import { createNativeStackNavigator, NativeStackNavigationProp } from "@react-navigation/native-stack";
 
-import { Home } from "../screens/Home";
-import { MyAds } from "../screens/MyAds";
+import { CreateAd } from "../screens/CreateAd";
 import { DetailsAd } from "../screens/DetailsAd";
 import { DetailsMyAd } from "../screens/DetailsMyAd";
+import { Home } from "../screens/Home";
+import { MyAds } from "../screens/MyAds";
 
 type AppRoutes = {
   home: undefined;
   myAds: undefined;
   detailsAd: undefined;
   detailsMyAd: undefined;
+  createAd: undefined
 }
 
 export type AppNavigatorRoutesProps = NativeStackNavigationProp<AppRoutes>;
@@ -28,6 +30,7 @@ export function AppRoutes () {
       <Screen name="myAds" component={MyAds} />
       <Screen name="detailsAd" component={DetailsAd} />
       <Screen name='detailsMyAd' component={DetailsMyAd} />
+      <Screen name='createAd' component={CreateAd} />
     </Navigator>
   )
 }

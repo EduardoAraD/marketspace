@@ -61,7 +61,7 @@ export function Input({ typeInput = 'normal', isInvalid, errorMessage = '', ...r
         isInvalid={isInvalid}
         {...rest}
       />
-      <FormControl.ErrorMessage _text={{ color: 'red.500' }}>
+      <FormControl.ErrorMessage _text={{ color: 'red.500', fontSize: 'xs' }}>
         {errorMessage}
       </FormControl.ErrorMessage>
     </FormControl>

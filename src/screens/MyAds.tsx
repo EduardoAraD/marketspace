@@ -16,13 +16,21 @@ export function MyAds() {
   const [service, setService] = useState("all");
   const [ads, setAds] = useState<string[]>(['1', '2', '3', '4', '5']);
 
+  function handleGoCreateAd() {
+    navigate('createAd');
+  }
+
   function handleGoDetailsAd() {
-    navigate("detailsMyAd")
+    navigate("detailsMyAd");
   }
 
   return (
     <VStack flex={1} bg='gray.600'>
-      <Header title="Meus anúncios" showIcon="plus" />
+      <Header
+        title="Meus anúncios"
+        showIcon="plus"
+        onPressIconEditOrPlus={handleGoCreateAd}
+      />
       <VStack flex={1}>
         <HStack p={6} pb={2} justifyContent='space-between' alignItems='center'>
           <Text fontFamily='body' fontSize='sm' color='gray.200'>9 anúncios</Text>

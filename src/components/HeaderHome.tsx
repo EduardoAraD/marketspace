@@ -1,9 +1,18 @@
 import { HStack, Heading, Text, VStack } from "native-base";
+import { useNavigation } from "@react-navigation/native";
+
+import { AppNavigatorRoutesProps } from "../routes/app.routes";
 
 import { Button } from "./Button";
 import { PhotoUser } from "./PhotoUser";
 
 export function HeaderHome() {
+  const { navigate } = useNavigation<AppNavigatorRoutesProps>();
+
+  function handleGoCreateAd() {
+    navigate('createAd');
+  }
+
   return (
     <HStack w='full'>
       <HStack flex={9} alignItems='center'>
@@ -25,6 +34,7 @@ export function HeaderHome() {
         icon='plus'
         flex={7}
         typeColorButton="SECUNDARY"
+        onPress={handleGoCreateAd}
       />
     </HStack>
   )
