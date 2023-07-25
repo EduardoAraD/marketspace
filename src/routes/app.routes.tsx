@@ -1,8 +1,8 @@
 import { createNativeStackNavigator, NativeStackNavigationProp } from "@react-navigation/native-stack";
 
-import { CreateAd } from "../screens/CreateAd";
-import { DetailsAd } from "../screens/DetailsAd";
-import { DetailsMyAd } from "../screens/DetailsMyAd";
+import { CreateAd, CreateAdRoutes } from "../screens/CreateAd";
+import { DetailsAd, DetailsAdRoutes } from "../screens/DetailsAd";
+import { DetailsMyAd, DetailsMyAdRoutes } from "../screens/DetailsMyAd";
 import { Home } from "../screens/Home";
 import { MyAds } from "../screens/MyAds";
 import { PreviewAd, PreviewAdRoutes } from "../screens/PreviewAd";
@@ -10,9 +10,9 @@ import { PreviewAd, PreviewAdRoutes } from "../screens/PreviewAd";
 type AppRoutes = {
   home: undefined;
   myAds: undefined;
-  detailsAd: undefined;
-  detailsMyAd: undefined;
-  createAd: undefined;
+  detailsAd: DetailsAdRoutes;
+  detailsMyAd: DetailsMyAdRoutes;
+  createAd: CreateAdRoutes;
   previewAd: PreviewAdRoutes;
 }
 

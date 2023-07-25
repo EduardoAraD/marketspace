@@ -27,7 +27,7 @@ export function Carousel({ images, isActiveAd = true }: CarouselProps) {
   ])
 
   useEffect(() => {
-    if(!isActiveAd || images.length === 1) return;
+    if(!isActiveAd || images.length <= 1) return;
     const timeId = setTimeout(() => {
       const newIndex = activeBanner === images.length - 1 ? 0 : activeBanner + 1;
 

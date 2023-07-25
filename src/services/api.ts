@@ -55,6 +55,7 @@ api.registerInterceptTokenManager = signOut => {
           return new Promise(async (resolve, reject) => {
             try {
               const { data } = await api.post('/sessions/refresh-token', { refresh_token });
+              console.log('REFRESH', data.refresh_token);
               await storageAuthTokenSave({ token: data.token, refresh_token: data.refresh_token })
 
               if(originalRequestConfig.data) {

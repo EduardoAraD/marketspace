@@ -1,28 +1,41 @@
-import { useState } from "react"
 import { Dimensions, TouchableOpacity, TouchableOpacityProps } from "react-native"
 import { Box, HStack, Image, Text, VStack } from "native-base"
 
 import { MoneyText } from "./MoneyText"
 import { PhotoUser } from "./PhotoUser"
 
+import { api } from "../services/api"
+
+import { maskPrice } from "../utils/mask"
+
+import defaultAvatarImg from '../assets/defaultAvatar.png';
+
 type CardMiniAd = TouchableOpacityProps & {
-  isActiveAd?: boolean;
-  // foto do anunciante
-  // foto do produto
-  // nome
-  // preco
-  // é usado
+  isActive?: boolean;
+  name: string;
+  imageUrl: string;
+  price: number;
+  isNew: boolean;
+  avatarAdvertiser?: string;
+  isMyAd?: boolean;
 }
 
-export function CardMiniAd({ isActiveAd = true, ...rest }: CardMiniAd) {
-  const [isUsed, setUsed] = useState(false);
-
+export function CardMiniAd({
+  isActive = true,
+  imageUrl,
+  isMyAd = false,
+  isNew,
+  name,
+  price,
+  avatarAdvertiser,
+  ...rest
+}: CardMiniAd) {
   return (
     <TouchableOpacity activeOpacity={0.8} {...rest}>
       <VStack w={Dimensions.get('window').width / 2 - 36} mx={2}>
         <Box>
           <Image
-            source={{ uri: 'https://github.com/eduardoarad.png' }}
+            source={{ uri: `${api.defaults.baseURL}/images/${imageUrl}` }}
             w='full'
             h={100}
             rounded={6}
@@ -36,23 +49,29 @@ export function CardMiniAd({ isActiveAd = true, ...rest }: CardMiniAd) {
             position='absolute'
             p={1}
           >
-            <PhotoUser
-              imageProps={{
-                source: { uri: 'https://github.com/eduardoarad.png' },
-                alt: 'Foto do anunciante'
-              }}
-              size={6}
-              borderWidth={0.25}
-              borderColor='gray.700'
-            />
-            <Box bg={isUsed ? 'gray.200' : 'blue.500'} px={2} py={0.5} rounded='full'>
+            {isMyAd ? (
+              <Box />
+            ) : (
+              <PhotoUser
+                imageProps={{
+                  source: avatarAdvertiser ?
+                    { uri: `${api.defaults.baseURL}/images/${avatarAdvertiser}` } :
+                    defaultAvatarImg,
+                  alt: 'Foto do anunciante'
+                }}
+                size={6}
+                borderWidth={0.25}
+                borderColor='gray.700'
+              />
+            )}
+            <Box bg={isNew ? 'blue.500' : 'gray.200'} px={2} py={0.5} rounded='full'>
               <Text fontFamily='heading' fontSize={10} color='white' p={0}>
-                {isUsed ? 'USADO' : 'NOVO'}
+                {isNew ? 'NOVO' : 'USADO'}
               </Text>
             </Box>
           </HStack>
 
-          {!isActiveAd && (
+          {!isActive && (
             <>
               <Box
                 h={100}
@@ -77,11 +96,11 @@ export function CardMiniAd({ isActiveAd = true, ...rest }: CardMiniAd) {
           )}
         </Box>
         <Text fontFamily='body' fontSize='sm' color='gray.200'>
-          Blusa do Ajax
+          {name}
         </Text>
         <MoneyText
           colorType="gray"
-          money="120,00"
+          money={maskPrice(price.toString())}
           fontSizeRS="xs"
           fontSizeMoney="md"
         />

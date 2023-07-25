@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { useNavigation } from "@react-navigation/native";
+import { useEffect, useState } from "react";
+import { useNavigation, useRoute } from "@react-navigation/native";
 import { HStack, Heading, ScrollView, Switch, Text, VStack, useToast } from "native-base";
 import * as ImagePicker from 'expo-image-picker';
 import * as FileSystem from 'expo-file-system';
@@ -16,12 +16,18 @@ import { Input } from "../components/Input";
 import { RadioLabel } from "../components/RadioLabel";
 import { TouchNewImage } from "../components/TouchNewImage";
 
+import { PaymentMethods } from "../dtos/PaymentMethods";
+import { PhotoDTO } from "../dtos/PhotoDTO";
+import { ProductCompleteDTO } from "../dtos/ProductDTO";
+
+import { api } from "../services/api";
+
+import { AppError } from "../utils/AppError";
 import { maskPrice } from "../utils/mask";
 
 type ImagePhotoAdSelected = {
   uri: string;
   type: string;
-  name: string;
 }
 
 type MeansPaygament = {
@@ -38,6 +44,11 @@ type FormDataProps = {
   price: string,
 }
 
+export type CreateAdRoutes = {
+  isNew: boolean;
+  product: ProductCompleteDTO;
+}
+
 const signUpSchema = Yup.object({
   title: Yup.string().required('Informe o título do anúncio'),
   description: Yup.string().required('Informe a descriçao do anúncio'),
@@ -45,6 +56,7 @@ const signUpSchema = Yup.object({
 })
 
 export function CreateAd() {
+  const { isNew, product } = useRoute().params as CreateAdRoutes;
   const { navigate, goBack } = useNavigation<AppNavigatorRoutesProps>();
   const toast = useToast();
   
@@ -61,7 +73,12 @@ export function CreateAd() {
   });
 
   const { control, handleSubmit, formState: { errors } } = useForm<FormDataProps>({
-    resolver: yupResolver(signUpSchema)
+    resolver: yupResolver(signUpSchema),
+    defaultValues: {
+      description: isNew ? '' : product.description,
+      price: isNew ? '0' : maskPrice(String(product.price)),
+      title: isNew ? '' : product.name,
+    }
   });
 
   async function handleUserPhotoSelect() {
@@ -82,11 +99,7 @@ export function CreateAd() {
         const photoInfo = await FileSystem.getInfoAsync(photoSelected.assets[0].uri, { size: true });
         
         if(photoInfo.exists && ((photoInfo.size / 1024 / 1024) * 0.6) > 5) {
-          return toast.show({
-            title: 'Esssa imagem é muito grande. Escolha uma de até 5MB.',
-            placement: 'top',
-            bgColor: 'red.500',
-          });
+          throw new AppError('Esssa imagem é muito grande. Escolha uma de até 5MB.')
         }
 
         const fileExtension = photoSelected.assets[0].uri.split('.').pop();
@@ -94,7 +107,6 @@ export function CreateAd() {
         const photoFile: ImagePhotoAdSelected = {
           uri: photoSelected.assets[0].uri,
           type: `${photoSelected.assets[0].type}/${fileExtension}`,
-          name: '',
         };
 
         setPhotosAd(state => [...state, photoFile]);
@@ -107,12 +119,14 @@ export function CreateAd() {
         })
       }
     } catch (error) {
-      console.log(error);
+      const isAppError = error instanceof AppError;
+      const title = isAppError ? error.message : 'Erro ao adicionar a foto.'
 
       toast.show({
-        title: 'Erro ao adicionar a foto.',
+        title,
         placement: 'top',
         bgColor: 'red.500',
+        duration: 2000,
       })
     } finally {
       setIsLoadingPhotoAd(false);
@@ -124,45 +138,88 @@ export function CreateAd() {
   }
 
   function handleSubmitCreate(data: FormDataProps){
-    if(photosAd.length === 0){
-      return toast.show({
-        title: 'Adicione as fotos do anúncio.',
+    try {
+      if(photosAd.length === 0){
+        throw new AppError('Adicione as fotos do anúncio.')
+      }
+      if(!pagament.boleto && !pagament.cardCredit && !pagament.depositBank && !pagament.money && !pagament.pix) {
+        throw new AppError('Adicione os meios de pagamento.')
+      }
+
+      let payment_methods: PaymentMethods[] = [];
+      if(pagament.boleto) {
+        payment_methods.push('boleto')
+      }
+      if(pagament.cardCredit) {
+        payment_methods.push('card')
+      }
+      if(pagament.depositBank) {
+        payment_methods.push('deposit')
+      }
+      if(pagament.money) {
+        payment_methods.push('cash')
+      }
+      if(pagament.pix) {
+        payment_methods.push('pix')
+      }
+      const price = parseInt(data.price.replace('.', '').replace(',', '').replace(/\D/g, ''), 10)
+      const photos: PhotoDTO[] = photosAd.map(({ type, uri }, index) => ({
+        name: `${data.title}-${index}.${type.split('/')[1]}`.replace(/\s/g, ''),
+        type,
+        uri,
+      }))
+  
+      navigate("previewAd", {
+        idProduct: isNew ? '' : product.id,
+        photos: photos,
+        photosOld: product?.product_images ?? [],
+        product: {
+          name: data.title.trim(),
+          accept_trade: acceptChange,
+          description: data.description.trim(),
+          is_new: isNewProduct === 'new',
+          payment_methods,
+          price,
+        }
+      })
+    } catch (error) {
+      const isAppError = error instanceof AppError;
+      const title = isAppError ? error.message : 'Erro em avançar anúncio.'
+
+      toast.show({
+        title,
         placement: 'top',
         bgColor: 'red.500',
-        duration: 2000
+        duration: 2000,
       })
     }
-    if(!pagament.boleto && !pagament.cardCredit && !pagament.depositBank && !pagament.money && !pagament.pix) {
-      return toast.show({
-        title: 'Adicione os meios de pagamento.',
-        placement: 'top',
-        bgColor: 'red.500',
-        duration: 2000
-      })
-    }
-
-    const newData = {
-      ...data,
-      meansPaygament: pagament,
-      photos: photosAd,
-      isProduct: isNewProduct,
-      acceptChange,
-    }
-
-    // console.log(newData);
-
-    navigate("previewAd", {
-      photos: newData.photos,
-    })
   }
 
   function handleCancelCreateAd() {
     goBack();
   }
 
+  useEffect(() => {
+    if(!isNew) {
+      setAcceptChange(product.accept_trade);
+      setIsNewProduct(product.is_new ? 'new' : 'used');
+      setPagament({
+        boleto: !!product.payment_methods.find(item => item.key === 'boleto'),
+        cardCredit: !!product.payment_methods.find(item => item.key === 'card'),
+        depositBank: !!product.payment_methods.find(item => item.key === 'deposit'),
+        money: !!product.payment_methods.find(item => item.key === 'cash'),
+        pix: !!product.payment_methods.find(item => item.key === 'pix')
+      });
+      setPhotosAd(product.product_images.map(image => ({
+        type: '',
+        uri: `${api.defaults.baseURL}/images/${image.path}`
+      })))
+    }
+  }, []);
+
   return (
     <VStack flex={1} bg='gray.600'>
-      <Header showIconBack title="Criar anúncio" />
+      <Header showIconBack title={isNew ? 'Criar anúncio' : 'Editar anúncio'} />
       <ScrollView showsVerticalScrollIndicator={false}>
         <VStack p={6}>
           <Heading fontFamily='heading' fontSize='md' color='gray.200'>
@@ -194,11 +251,12 @@ export function CreateAd() {
           <Controller
             control={control}
             name="title"
-            render={({ field: { onChange }}) => (
+            render={({ field: { onChange, value }}) => (
               <Input
                 mt={4}
                 placeholder="Título do anúncio"
                 onChangeText={onChange}
+                value={value}
                 errorMessage={errors.title?.message}
               />
             )}
@@ -206,12 +264,13 @@ export function CreateAd() {
           <Controller
             control={control}
             name="description"
-            render={({ field: { onChange }}) => (
+            render={({ field: { onChange, value }}) => (
               <Input
                 placeholder="Decrição do produto"
                 h={40}
                 multiline
                 onChangeText={onChange}
+                value={value}
                 errorMessage={errors.title?.message}
               />
             )}

@@ -1,8 +1,8 @@
-import { Center, Spinner, Text } from "native-base";
+import { Center, IBoxProps, Spinner } from "native-base";
 
-export function Loading() {
+export function Loading({ ...rest }: IBoxProps) {
   return (
-    <Center flex={1}>
+    <Center flex={1} {...rest}>
       <Spinner />
     </Center>
   )

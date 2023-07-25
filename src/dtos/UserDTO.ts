@@ -5,3 +5,9 @@ export type UserDTO = {
   email: string;
   tel: string;
 }
+
+export type UserResumeDTO = {
+  avatar: string;
+  name: string;
+  tel: string;
+}

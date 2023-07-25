@@ -10,6 +10,8 @@ import { api } from "../services/api";
 import { Button } from "./Button";
 import { PhotoUser } from "./PhotoUser";
 
+import { ProductCompleteDTO } from "../dtos/ProductDTO";
+
 import defaultAvatarImg from '../assets/defaultAvatar.png';
 
 export function HeaderHome() {
@@ -17,7 +19,7 @@ export function HeaderHome() {
   const { user } = useAuth();
 
   function handleGoCreateAd() {
-    navigate('createAd');
+    navigate('createAd', { isNew: true, product: {} as ProductCompleteDTO});
   }
 
   return (
