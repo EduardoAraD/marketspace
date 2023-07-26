@@ -3,7 +3,7 @@
 
 # Sobre o projeto
 
-**Ignite Gym** é uma aplicação mobile de compra e venda de produtos novos ou usados. Este pojeto utiliza uma api oferecida pela propria Rocket para uso.
+**MarketSpace** é uma aplicação mobile de compra e venda de produtos novos ou usados. Este pojeto utiliza uma api oferecida pela propria Rocket para uso.
 
 Nesta aplicação foram feitos Context do React, Async Storage, Token JWT, Refresh Token, Navegação Stack.
 
