@@ -1,4 +1,4 @@
-import { useCallback, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import { VStack, Select, HStack, Text, useTheme, FlatList, Box, useToast } from "native-base";
 import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import { CaretUp, CaretDown } from "phosphor-react-native";
@@ -61,6 +61,12 @@ export function MyAds() {
     }, [])
   )
 
+  const listProductsAds = useMemo(() => {
+    if(service === 'active') return ads.filter(item => item.is_active);
+    if(service === 'inactive') return ads.filter(item => !item.is_active)
+    return ads;
+  }, [service])
+
   return (
     <VStack flex={1} bg='gray.600'>
       <Header
@@ -75,7 +81,7 @@ export function MyAds() {
           </Text>
           <Select
             selectedValue={service}
-            onValueChange={itemValue => setService(itemValue)}
+            onValueChange={(itemValue) => setService(itemValue)}
             minW={120}
             fontFamily='body'
             fontSize='sm'
@@ -106,7 +112,7 @@ export function MyAds() {
           <Loading />
         ) : (
           <FlatList
-            data={ads}
+            data={listProductsAds}
             keyExtractor={item => item.id}
             renderItem={({ item }) => (
               <CardMiniAd

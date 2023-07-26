@@ -12,9 +12,10 @@ import { InputSearch } from "../components/InputSearch";
 import { Loading } from "../components/Loading";
 import { IFilterProps, ModalFilterAds } from "../components/ModalFilterAds";
 
+import { PaymentMethods } from "../dtos/PaymentMethods";
 import { ProductHomeDTO } from "../dtos/ProductDTO";
 
-import { getProductsService } from "../services/Products/getProducts";
+import { FilterProductsServiceProps, getProductsService } from "../services/Products/getProducts";
 import { getProductsUserService } from "../services/Products/getProductsByUser";
 
 import { AppError } from "../utils/AppError";
@@ -24,8 +25,10 @@ export function Home() {
   const toast = useToast();
 
   const [loading, setLoading] = useState(false);
+  const [loadingFilter, setLoadingFilter] = useState(false);
   const [isShowModal, setIsShowModal] = useState(false);
   const [numberAds, setNumberAds] = useState(0);
+  const [search, setSearch] = useState('');
   const [ads, setAds] = useState<ProductHomeDTO[]>([]);
   const [filter, setFilter] = useState<IFilterProps>({
     acceptChange: false,
@@ -43,12 +46,10 @@ export function Home() {
     navigate("detailsAd", { idProduct: idProductAd })
   }
 
-  async function getProductsData() {
+  async function getMyProductsData() {
     try {
       setLoading(true);
 
-      const products = await getProductsService();
-      setAds(products);
       const myProducts = await getProductsUserService();
       setNumberAds(myProducts.length);
     } catch (error) {
@@ -66,10 +67,57 @@ export function Home() {
     }
   }
 
+  async function getFilterProductData() {
+    try {
+      setLoadingFilter(true);
+      const filterProduct: FilterProductsServiceProps = {}
+      if(filter.acceptChange) {
+        filterProduct.acceptTrade = filter.acceptChange;
+      }
+      if(filter.condition !== '') {
+        filterProduct.isNew = filter.condition === 'new';
+      } 
+      if(search !== '') {
+        filterProduct.name = search;
+      }
+      if(filter.pagament.boleto || filter.pagament.cardCredit || filter.pagament.depositBank || filter.pagament.money|| filter.pagament.pix) {
+        const listPayment: PaymentMethods[] = []
+        if(filter.pagament.boleto) listPayment.push('boleto');
+        if(filter.pagament.cardCredit) listPayment.push('card');
+        if(filter.pagament.depositBank) listPayment.push('deposit');
+        if(filter.pagament.money) listPayment.push('cash');
+        if(filter.pagament.pix) listPayment.push('pix');
+
+        filterProduct.paymentMethods = listPayment;
+      }
+
+      const products = await getProductsService(filterProduct);
+      setAds(products);
+    } catch (error) {
+      const isAppError = error instanceof AppError;
+      const title = isAppError ? error.message : 'Erro ao buscar seus anúncios. Tente novamente mais tarde.'
+
+      toast.show({
+        title: title || 'Erro ao buscar seus anúncios. Tente novamente mais tarde.',
+        placement: 'top',
+        bg: 'red.500',
+        duration: 2000,
+      })
+    } finally {
+      setLoadingFilter(false);
+    }
+  }
+
   useFocusEffect(
     useCallback(() => {
-      getProductsData();
+      getMyProductsData();
     }, [])
+  )
+
+  useFocusEffect(
+    useCallback(() => {
+      getFilterProductData();
+    }, [filter, search])
   )
 
   return (
@@ -84,12 +132,14 @@ export function Home() {
           <Text mt={8} mb={3} fontFamily='body' fontSize='sm' color='gray.300'>Compre produtos variados</Text>
           <InputSearch
             placeholder="Buscar anúncio"
+            value={search}
+            onChangeText={setSearch}
             onPressFilter={() => {
               setIsShowModal(true);
             }}
           />
         </VStack>
-        {loading ? (
+        {loadingFilter ? (
           <Loading />
         ) : (
           <FlatList

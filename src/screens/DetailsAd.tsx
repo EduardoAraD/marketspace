@@ -56,8 +56,6 @@ export function DetailsAd() {
   }
 
   function handleOpenWhats() {
-    console.log(product.user.tel);
-    console.log(`https://wa.me/55${product.user.tel.replace(/\D/g,'')}`);
     Linking.openURL(`https://wa.me/55${product.user.tel.replace(/\D/g,'')}`)
   }
 

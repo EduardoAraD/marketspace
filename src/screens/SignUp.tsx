@@ -173,7 +173,6 @@ export function SignUp() {
                 imageProps={{
                   source: photoSelected.uri ? { uri: photoSelected.uri } : defaultAvatarImg,
                   alt: 'Foto do usuário',
-                  // source: { uri: 'https://github.com/eduardoarad.png' }
                 }}
                 size={22}
                 isLoading={isLoadingPhotoUser}
