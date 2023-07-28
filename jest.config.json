@@ -1,6 +1,9 @@
 {
   "preset": "jest-expo",
   "bail": true,
+  "setupFiles": [
+    "./__tests__/mocks/async-storage.js"
+  ],
   "setupFilesAfterEnv": ["@testing-library/jest-native/extend-expect"],
   "testPathIgnorePatterns": [
     "./__tests__/coverage"

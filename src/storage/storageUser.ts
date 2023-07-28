@@ -8,7 +8,7 @@ export async function storageUserSave(user: UserDTO) {
   await AsyncStorage.setItem(USER_STORAGE, JSON.stringify(user));
 }
 
-export async function storageUserGet() {
+export async function storageUserGet(): Promise<UserDTO> {
   const userStorage = await AsyncStorage.getItem(USER_STORAGE);
 
   const user = userStorage ? JSON.parse(userStorage) : {};
